@@ -1,0 +1,33 @@
+.graph-container {
+  flex: 1;
+  position: relative;
+  background: #fff;
+  border-left: 1px solid #e5e7eb;
+}
+
+.graph-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.graph-controls button {
+  padding: 0.375rem 0.75rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.graph-controls button:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
