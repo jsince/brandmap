@@ -256,37 +256,40 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <div>
-            <h1 style={{ margin: 0 }}>BrandMap</h1>
-            <p style={{ margin: '0.25rem 0 0 0' }}>Visualize your marketing website sitemap and paid media connections</p>
+        <div className="header-content">
+          <div className="header-left">
+            <h1>BrandMap</h1>
+            <p>Visualize your marketing website sitemap and paid media connections</p>
+            {loading && <p style={{ marginTop: '0.25rem', fontSize: '0.875rem', color: '#60a5fa' }}>Loading sitemap...</p>}
           </div>
-          {zoomControlsRef && (
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              {zoomControlsRef}
-            </div>
-          )}
-        </div>
-        {loading && <p style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>Loading sitemap...</p>}
-        {error && (
-          <div style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>
-            <p style={{ color: '#ef4444', marginBottom: '0.5rem' }}>Error: {error}</p>
-            {showManualImport && (
+          <div className="header-right">
+            {zoomControlsRef && zoomControlsRef}
+            {error && showManualImport && (
               <button 
                 onClick={() => setShowManualImport(true)}
                 style={{ 
-                  padding: '0.5rem 1rem', 
-                  background: '#667eea', 
-                  color: 'white', 
+                  padding: '0.625rem 1.25rem', 
+                  background: '#ffffff',
+                  color: '#000000', 
                   border: 'none', 
                   borderRadius: '0.375rem',
                   cursor: 'pointer',
-                  fontWeight: '500'
+                  fontWeight: '600',
+                  fontSize: '0.875rem',
+                  transition: 'all 0.2s',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
                 }}
+                onMouseOver={(e) => e.target.style.background = '#f3f4f6'}
+                onMouseOut={(e) => e.target.style.background = '#ffffff'}
               >
-                Import Sitemap Manually
+                Import Sitemap
               </button>
             )}
+          </div>
+        </div>
+        {error && !showManualImport && (
+          <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#ef4444' }}>
+            Error: {error}
           </div>
         )}
       </header>
@@ -303,6 +306,7 @@ function App() {
             onDeletePaidMedia={deletePaidMedia}
             onAddInternalLink={addInternalLink}
             onPageClick={handlePageClick}
+            onLoadSitemap={handleManualImport}
           />
         )}
         <button
@@ -312,18 +316,22 @@ function App() {
             left: sidebarVisible ? '350px' : '0',
             top: '80px',
             zIndex: 1000,
-            padding: '0.5rem',
-            background: '#667eea',
-            color: 'white',
-            border: 'none',
+            padding: '0.625rem 0.75rem',
+            background: '#ffffff',
+            color: '#1a1a1a',
+            border: '1px solid #e5e7eb',
+            borderLeft: sidebarVisible ? '1px solid #e5e7eb' : 'none',
             borderTopRightRadius: '0.375rem',
             borderBottomRightRadius: '0.375rem',
             cursor: 'pointer',
-            fontSize: '1.25rem',
-            transition: 'left 0.3s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            fontSize: '1rem',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+            fontWeight: '600'
           }}
           title={sidebarVisible ? 'Hide Sidebar' : 'Show Sidebar'}
+          onMouseOver={(e) => e.target.style.background = '#f9fafb'}
+          onMouseOut={(e) => e.target.style.background = '#ffffff'}
         >
           {sidebarVisible ? '◀' : '▶'}
         </button>

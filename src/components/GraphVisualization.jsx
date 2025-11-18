@@ -115,9 +115,10 @@ function GraphVisualization({ graphData, sidebarVisible = true, onNodeFocus, onZ
       shape: 'dot',
       size: node.nodeType === 'paid-media' ? 12 : 16,
       font: {
-        size: node.nodeType === 'paid-media' ? 9 : 12, // Smaller fonts
+        size: node.nodeType === 'paid-media' ? 9 : 60, // Extra large font for page nodes
         color: '#333',
-        face: 'Arial, sans-serif'
+        face: 'Arial, sans-serif',
+        bold: node.nodeType !== 'paid-media' ? '600' : 'normal' // Make page names bold
       },
       // Store node type for custom rendering if needed
       nodeType: node.nodeType

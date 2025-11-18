@@ -31,3 +31,7 @@ pnpm-debug.log*
 .env.local
 .env.production.local
 .env.development.local
+
+# Windows WSL Zone Identifier files
+*:Zone.Identifier
+*.Identifier

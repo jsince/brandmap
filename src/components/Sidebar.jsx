@@ -11,9 +11,10 @@ function Sidebar({
   onUpdatePaidMedia,
   onDeletePaidMedia,
   onAddInternalLink,
-  onPageClick
+  onPageClick,
+  onLoadSitemap
 }) {
-  const [activeTab, setActiveTab] = useState('pages')
+  const [activeTab, setActiveTab] = useState('sitemap')
   const [showAddPageForm, setShowAddPageForm] = useState(false)
   const [showAddMediaForm, setShowAddMediaForm] = useState(false)
   const [editingPage, setEditingPage] = useState(null)
@@ -84,9 +85,25 @@ function Sidebar({
     setEditingMedia(null)
   }
 
+  const handleLoadSitemap = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const input = formData.get('sitemapInput')
+    if (input && onLoadSitemap) {
+      onLoadSitemap(input)
+      setActiveTab('pages') // Switch to pages tab after loading
+    }
+  }
+
   return (
     <div className="sidebar">
       <div className="sidebar-tabs">
+        <button 
+          className={activeTab === 'sitemap' ? 'active' : ''}
+          onClick={() => setActiveTab('sitemap')}
+        >
+          Sitemap
+        </button>
         <button 
           className={activeTab === 'pages' ? 'active' : ''}
           onClick={() => setActiveTab('pages')}
@@ -102,6 +119,111 @@ function Sidebar({
       </div>
 
       <div className="sidebar-content">
+        {activeTab === 'sitemap' && (
+          <div className="sitemap-tab">
+            <div className="section-header">
+              <h2>Load Sitemap</h2>
+            </div>
+            
+            <form className="add-form" onSubmit={handleLoadSitemap} style={{ marginBottom: '1.5rem' }}>
+              <label style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', display: 'block' }}>
+                Import Sitemap
+              </label>
+              <p style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '1rem' }}>
+                Enter a sitemap URL or paste XML content directly
+              </p>
+              <textarea 
+                name="sitemapInput"
+                placeholder="https://example.com/sitemap.xml or paste XML content..."
+                style={{
+                  width: '100%',
+                  height: '120px',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '0.375rem',
+                  fontFamily: 'monospace',
+                  fontSize: '0.75rem',
+                  resize: 'vertical',
+                  marginBottom: '1rem'
+                }}
+                required
+              />
+              <button type="submit" style={{ width: '100%' }}>
+                Load Sitemap
+              </button>
+            </form>
+
+            <div style={{ 
+              padding: '1rem', 
+              background: '#f9fafb', 
+              borderRadius: '0.375rem',
+              fontSize: '0.75rem',
+              color: '#374151'
+            }}>
+              <h3 style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem' }}>
+                Current Data
+              </h3>
+              <p style={{ marginBottom: '0.25rem' }}>
+                <strong>Pages:</strong> {pages.length}
+              </p>
+              <p>
+                <strong>Paid Media:</strong> {paidMediaItems.length}
+              </p>
+            </div>
+
+            <div style={{ 
+              marginTop: '1rem',
+              padding: '1rem', 
+              background: '#f0fdf4', 
+              borderRadius: '0.375rem',
+              borderLeft: '3px solid #10b981'
+            }}>
+              <h3 style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.75rem', color: '#047857' }}>
+                Quick Load
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <button
+                  onClick={() => {
+                    if (onLoadSitemap) {
+                      onLoadSitemap('https://tillerdigital.com/page-sitemap.xml')
+                      setActiveTab('pages')
+                    }
+                  }}
+                  style={{
+                    padding: '0.5rem',
+                    background: 'white',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.375rem',
+                    cursor: 'pointer',
+                    fontSize: '0.75rem',
+                    textAlign: 'left',
+                    color: '#047857'
+                  }}
+                >
+                  Load Tiller Digital Sitemap
+                </button>
+              </div>
+            </div>
+
+            <div style={{ 
+              marginTop: '1rem',
+              padding: '1rem', 
+              background: '#eff6ff', 
+              borderRadius: '0.375rem',
+              borderLeft: '3px solid #3b82f6'
+            }}>
+              <h3 style={{ fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.5rem', color: '#1e40af' }}>
+                💡 Tips
+              </h3>
+              <ul style={{ fontSize: '0.75rem', color: '#1e40af', marginLeft: '1.25rem', lineHeight: '1.5' }}>
+                <li>Paste a sitemap URL (e.g., https://example.com/sitemap.xml)</li>
+                <li>Or paste XML content directly</li>
+                <li>Loading a new sitemap will replace current data</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
         {activeTab === 'pages' && (
           <div className="pages-tab">
             <div className="section-header">
