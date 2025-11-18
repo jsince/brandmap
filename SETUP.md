@@ -2,12 +2,19 @@
 
 Complete setup instructions for the BrandMap visual sitemap explorer.
 
+## 🚀 Live Demo
+
+Before setting up locally, try the live version:
+
+**https://jsince.github.io/brandmap/**
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Initial Setup](#initial-setup)
 - [Running the Development Server](#running-the-development-server)
 - [Building for Production](#building-for-production)
+- [Deploying to GitHub Pages](#deploying-to-github-pages)
 - [Environment Configuration](#environment-configuration)
 - [Common Setup Issues](#common-setup-issues)
 
@@ -148,6 +155,47 @@ dist/
 │   └── index-[hash].css   # Bundled CSS
 └── [other assets]
 ```
+
+## Deploying to GitHub Pages
+
+### Quick Deploy
+
+```bash
+npm run deploy
+```
+
+This command:
+1. Builds the production version (`npm run build`)
+2. Deploys to the `gh-pages` branch
+3. Updates the live site at https://jsince.github.io/brandmap/
+
+### Manual Deploy (if issues occur)
+
+If you encounter permission issues on WSL:
+
+```bash
+# Fix permissions and build
+chmod +x node_modules/.bin/*
+node node_modules/vite/bin/vite.js build
+
+# Deploy to GitHub Pages
+npx gh-pages -d dist
+```
+
+### Verify Deployment
+
+After deployment:
+1. Wait 1-2 minutes for GitHub Pages to update
+2. Visit https://jsince.github.io/brandmap/
+3. Hard refresh (Ctrl+Shift+R) to see changes
+
+### GitHub Repository Settings
+
+Ensure GitHub Pages is enabled:
+1. Go to repository **Settings**
+2. Navigate to **Pages**
+3. Verify **Source**: Deploy from branch
+4. Verify **Branch**: `gh-pages` / `root`
 
 ## Environment Configuration
 

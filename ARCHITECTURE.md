@@ -18,6 +18,10 @@ Technical architecture and design documentation for BrandMap.
 
 BrandMap is a single-page React application that visualizes website sitemaps and paid media connections using an interactive force-directed graph. The application is built with modern web technologies emphasizing performance, maintainability, and user experience.
 
+**Live Application:** https://jsince.github.io/brandmap/
+
+The application features a professional, modern UI design inspired by contemporary B2B SaaS applications, with a focus on readability and usability.
+
 ### High-Level Architecture
 
 ```
@@ -163,6 +167,12 @@ const [error, setError] = useState(null)
 - Provide forms for adding/editing items
 - Handle user input and validation
 - Trigger actions through callbacks
+- **NEW:** Sitemap loading and management tab
+
+**Tabs:**
+1. **Sitemap Tab** - Load/switch between different sitemaps
+2. **Pages Tab** - Manage website pages
+3. **Paid Media Tab** - Manage advertising connections
 
 **Props Interface:**
 ```javascript
@@ -177,6 +187,7 @@ interface SidebarProps {
   onDeletePaidMedia: (id) => void
   onAddInternalLink: (source, target) => void
   onPageClick: (pageId) => void
+  onLoadSitemap: (input) => void  // NEW: Load sitemap from URL or XML
 }
 ```
 
@@ -202,24 +213,47 @@ interface GraphVisualizationProps {
 ```javascript
 const options = {
   nodes: {
-    shape: 'box',
-    font: { color: '#ffffff' },
-    color: { background: '#667eea' }
+    shape: 'dot',
+    borderWidth: 2,
+    shadow: { enabled: true, size: 4 },
+    font: {
+      size: 11,  // Base size, overridden per node
+      face: 'Arial, sans-serif',
+      align: 'center'
+    },
+    margin: { top: 10, right: 10, bottom: 10, left: 10 }
   },
   edges: {
-    arrows: 'to',
-    color: { color: '#94a3b8' },
-    smooth: { type: 'continuous' }
+    arrows: { to: { enabled: false } },
+    smooth: {
+      enabled: true,
+      type: 'cubicBezier',
+      forceDirection: 'horizontal',
+      roundness: 0.2
+    },
+    width: 1.5
   },
   physics: {
-    enabled: true,
-    stabilization: { iterations: 100 },
-    barnesHut: {
-      gravitationalConstant: -8000,
-      centralGravity: 0.3,
-      springLength: 150
-    }
+    enabled: false  // Nodes are pre-positioned with layout algorithm
+  },
+  interaction: {
+    zoomView: true,
+    dragView: true,
+    dragNodes: true
   }
+}
+
+// Per-node configuration
+{
+  // Page nodes
+  font: { size: 60, bold: '600' },  // Large, bold for readability
+  color: { background: '#3b82f6', border: '#2563eb' },  // Blue
+  size: 16,
+  
+  // Paid media nodes
+  font: { size: 9 },
+  color: { background: '#f59e0b', border: '#d97706' },  // Orange
+  size: 12
 }
 ```
 
@@ -568,6 +602,84 @@ function validatePageData(data) {
 }
 ```
 
+## Design System
+
+### Visual Design
+
+BrandMap features a clean, modern interface inspired by contemporary B2B SaaS applications (specifically Tiller Digital):
+
+**Color Palette:**
+- **Primary Black:** `#000000` (navigation header)
+- **Page Nodes:** `#3b82f6` (blue) with `#2563eb` border
+- **Paid Media Nodes:** `#f59e0b` (orange) with `#d97706` border
+- **Text:** `#ffffff` (white on dark), `#1a1a1a` (dark on light)
+- **Subtle Gray:** `#a3a3a3` (secondary text)
+
+**Typography:**
+- **Page Labels:** 60px, bold (600 weight) - maximum readability
+- **Paid Media Labels:** 9px - visual hierarchy
+- **Header Title:** 1.5rem, bold (700 weight)
+- **Body Text:** 0.875rem
+- **Font Stack:** System fonts (San Francisco, Segoe UI, Roboto, etc.)
+
+**Spacing & Layout:**
+- Navigation: 1rem vertical, 2rem horizontal padding
+- Consistent 0.5rem-1rem gaps between elements
+- Card-based layouts with subtle shadows
+- Generous whitespace for breathing room
+
+**Interactive Elements:**
+- Buttons: 0.625rem padding, 0.375rem border radius
+- Smooth hover effects with slight elevation
+- Transitions: 0.15s-0.3s ease timing
+- Focus states for accessibility
+
+### User Experience
+
+**Navigation Flow:**
+1. **Sitemap Tab** → Load data
+2. **Pages/Media Tabs** → Manage content
+3. **Graph** → Visualize and interact
+
+**Key UX Features:**
+- Three-tab sidebar for organized workflows
+- Quick-load presets for demos
+- Real-time graph updates
+- Focus on click for better navigation
+- Zoom controls in header for accessibility
+
+## Deployment
+
+### GitHub Pages
+
+BrandMap is deployed to GitHub Pages at: https://jsince.github.io/brandmap/
+
+**Configuration:**
+- Base path: `/brandmap/` (vite.config.js)
+- Build output: `dist/` directory
+- Deploy branch: `gh-pages`
+- Deploy command: `npm run deploy`
+
+**Build Process:**
+1. Vite builds optimized production bundle
+2. gh-pages package pushes dist/ to gh-pages branch
+3. GitHub Pages serves from gh-pages branch
+4. Updates typically live within 1-2 minutes
+
+### Vite Configuration
+
+```javascript
+export default defineConfig({
+  plugins: [react()],
+  base: '/brandmap/',  // GitHub Pages subdirectory
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false  // Omit sourcemaps for production
+  }
+})
+```
+
 ## Future Enhancements
 
 ### Potential Features
@@ -575,27 +687,38 @@ function validatePageData(data) {
 1. **Data Persistence**
    - LocalStorage for saving state
    - Backend API for multi-user scenarios
-   - Export/import functionality
+   - Export/import to JSON/CSV
+   - Multiple sitemap projects
 
 2. **Advanced Filtering**
-   - Filter by platform
-   - Search functionality
-   - Date range filtering
+   - Filter by platform (Google, Facebook, etc.)
+   - Search functionality across nodes
+   - Date range filtering for campaigns
+   - Custom grouping and clustering
 
 3. **Analytics Integration**
-   - Connect to Google Analytics
-   - Track performance metrics
-   - ROI calculations
+   - Connect to Google Analytics API
+   - Track performance metrics per page
+   - ROI calculations for campaigns
+   - Traffic correlation visualization
 
-4. **Collaboration Features**
-   - Real-time collaboration
-   - Comments and annotations
-   - Version history
+4. **Enhanced Visualization**
+   - Custom color themes
+   - Different layout algorithms
+   - Timeline view for campaigns
+   - Heat maps for performance
 
-5. **Mobile Optimization**
-   - Touch gestures
-   - Responsive redesign
-   - Progressive Web App
+5. **Collaboration Features**
+   - Real-time multi-user editing
+   - Comments and annotations on nodes
+   - Version history and rollback
+   - Share links with view-only access
+
+6. **Mobile Optimization**
+   - Touch gestures for zoom/pan
+   - Responsive sidebar design
+   - Mobile-optimized controls
+   - Progressive Web App (PWA) support
 
 ### Technical Improvements
 

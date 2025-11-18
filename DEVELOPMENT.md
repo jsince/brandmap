@@ -303,6 +303,38 @@ function Component() {
 export default Component;
 ```
 
+## Recent Updates
+
+### UI Design Changes
+
+The app now features a modern, professional design:
+
+**Navigation Header:**
+- Black background (#000000) matching modern B2B SaaS aesthetics
+- White text for high contrast
+- Clean, minimal design
+- Professional typography
+
+**Graph Visualization:**
+- **Page nodes (blue)**: 60px font size for maximum readability
+- **Paid media nodes (orange)**: 9px font size for visual hierarchy
+- Bold page labels for emphasis
+- High contrast colors for better visibility
+
+**Sitemap Tab:**
+- New dedicated tab for loading sitemaps
+- Quick-load presets (Tiller Digital)
+- Support for URL or direct XML paste
+- Current data statistics display
+
+### Key Features Added
+
+1. **Sitemap Management Tab** - Easy switching between different sitemaps
+2. **Enhanced Typography** - 60px page labels, bold text
+3. **Quick Load Options** - One-click sitemap loading
+4. **Modern UI** - Black header, professional color scheme
+5. **GitHub Pages** - Live deployment at https://jsince.github.io/brandmap/
+
 ## Component Development
 
 ### Creating a New Component
@@ -507,6 +539,58 @@ npm run build
 ls -lh dist/
 ```
 
+### GitHub Pages Deployment
+
+BrandMap is configured for automatic deployment to GitHub Pages.
+
+#### Initial Setup (Already Done)
+
+The repository is configured with:
+- Base path: `/brandmap/` in `vite.config.js`
+- Deploy script: `npm run deploy` in `package.json`
+- gh-pages package installed
+
+#### Deploying Updates
+
+```bash
+# 1. Make your changes
+# ... edit files ...
+
+# 2. Commit changes
+git add -A
+git commit -m "feat: your changes description"
+git push origin main
+
+# 3. Build and deploy to GitHub Pages
+npm run deploy
+```
+
+#### Manual Deployment (if npm script fails)
+
+If you encounter Vite permission issues on WSL:
+
+```bash
+# Fix permissions and build
+chmod +x node_modules/.bin/*
+node node_modules/vite/bin/vite.js build
+
+# Deploy to gh-pages branch
+npx gh-pages -d dist
+```
+
+#### Verify Deployment
+
+After deploying:
+1. Wait 1-2 minutes for GitHub Pages to update
+2. Visit: https://jsince.github.io/brandmap/
+3. Check that your changes appear
+
+#### GitHub Pages Settings
+
+Ensure your repository settings have:
+- **Settings** → **Pages** → **Source**: Deploy from branch
+- **Branch**: `gh-pages` / `root`
+
 ### Build Configuration
 
 ```javascript
@@ -532,7 +616,15 @@ export default defineConfig({
 
 ### Deployment Options
 
-#### Static Hosting (Netlify, Vercel, GitHub Pages)
+#### GitHub Pages (Configured)
+
+```bash
+npm run deploy
+```
+
+Live at: https://jsince.github.io/brandmap/
+
+#### Alternative: Static Hosting (Netlify, Vercel)
 
 ```bash
 # Build
