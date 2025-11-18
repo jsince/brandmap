@@ -35,3 +35,4 @@ pnpm-debug.log*
 # Windows WSL Zone Identifier files
 *:Zone.Identifier
 *.Identifier
+/.vite/

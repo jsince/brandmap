@@ -345,8 +345,25 @@ function GraphVisualization({ graphData, sidebarVisible = true, onNodeFocus, onZ
   // Safety check for empty data
   if (!graphData || !graphData.nodes || graphData.nodes.length === 0) {
     return (
-      <div className="graph-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p>No data to display. Loading sitemap...</p>
+      <div className="graph-container" style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        flexDirection: 'column',
+        gap: '1rem',
+        padding: '2rem'
+      }}>
+        <div style={{ textAlign: 'center', maxWidth: '500px', color: '#6b7280' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>
+            Welcome to BrandMap
+          </h2>
+          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+            Visualize your marketing website sitemap and paid media connections
+          </p>
+          <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+            👈 Open the <strong style={{ color: '#1a1a1a' }}>Sitemap tab</strong> in the sidebar to load a sitemap and get started
+          </p>
+        </div>
       </div>
     )
   }

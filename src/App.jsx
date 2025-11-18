@@ -57,44 +57,12 @@ function App() {
     return generatedMedia
   }, [])
 
-  // Load sitemap on mount
+  // Note: No auto-load on mount - users load sitemaps via Sitemap tab
+  // This prevents CORS issues and gives users control
   useEffect(() => {
-    const loadSitemap = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const sitemapUrl = 'https://tillerdigital.com/page-sitemap.xml'
-        const pages = await fetchSitemap(sitemapUrl)
-        
-        // Convert pages to nodes format
-        const initialNodes = pages.map(page => ({
-          ...page,
-          x: 0,
-          y: 0
-        }))
-        
-        setNodes(initialNodes)
-        
-        // Generate paid media items for all pages (1-10 per page)
-        const generatedMedia = generatePaidMediaForPages(initialNodes)
-        setPaidMediaItems(generatedMedia)
-        
-        setLoading(false)
-      } catch (err) {
-        console.error('Failed to load sitemap:', err)
-        setError(err.message)
-        setLoading(false)
-        // Fallback to empty state
-        setNodes([])
-        // Show manual import option if CORS error or parsing error
-        if (err.message.includes('CORS') || err.message.includes('fetch') || err.message.includes('HTML instead of XML')) {
-          setShowManualImport(true)
-        }
-      }
-    }
-    
-    loadSitemap()
-  }, [generatePaidMediaForPages])
+    // Start with empty state
+    setLoading(false)
+  }, [])
 
   const handleManualImport = useCallback(async (input) => {
     try {

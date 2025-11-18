@@ -1,0 +1,43 @@
+{
+  "hash": "51f9a89f",
+  "configHash": "38934064",
+  "lockfileHash": "c6f30330",
+  "browserHash": "c5c67434",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "44a43991",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "9b2b4790",
+      "needsInterop": true
+    },
+    "vis-network": {
+      "src": "../../node_modules/vis-network/peer/esm/vis-network.mjs",
+      "file": "vis-network.js",
+      "fileHash": "a8374d8c",
+      "needsInterop": false
+    },
+    "vis-data": {
+      "src": "../../node_modules/vis-data/peer/esm/vis-data.mjs",
+      "file": "vis-data.js",
+      "fileHash": "d4421ccf",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-JCH2SJW3": {
+      "file": "chunk-JCH2SJW3.js"
+    },
+    "chunk-LSGWSDTW": {
+      "file": "chunk-LSGWSDTW.js"
+    },
+    "chunk-BUSYA2B4": {
+      "file": "chunk-BUSYA2B4.js"
+    }
+  }
+}
