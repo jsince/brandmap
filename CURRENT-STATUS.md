@@ -47,44 +47,21 @@ The production `gh-pages` branch has **OLD CODE** that auto-loads the sitemap. T
 
 ### Deploy the New Code to GitHub Pages
 
-Run these commands in a **fresh terminal** (previous terminal was hung):
+Run this single command (simple and safe - no branch switching required):
 
 ```bash
 cd /home/jeremy/code/brandmap
-
-# 1. Kill any stuck processes
-pkill -9 node
-
-# 2. Make sure you're on main branch
-git checkout main
-
-# 3. Build production version
-npm run build
-
-# 4. Switch to gh-pages branch
-git checkout gh-pages
-
-# 5. Remove ALL old files
-git rm -rf .
-
-# 6. Copy ONLY the built files
-cp -r dist/* .
-
-# 7. Clean up
-rm -rf dist node_modules package-lock.json .vite
-
-# 8. Stage changes
-git add -A
-
-# 9. Commit
-git commit -m "Deploy: remove auto-load sitemap, add welcome message"
-
-# 10. Push to GitHub
-git push origin gh-pages
-
-# 11. Go back to main
-git checkout main
+npm run deploy
 ```
+
+**That's it!** This command:
+- Automatically builds the production version (via `predeploy` hook)
+- Uses the `gh-pages` tool to deploy to GitHub
+- Creates a temporary folder outside your project
+- Copies your built files from `dist/`
+- Pushes them to the `gh-pages` branch on GitHub
+- Keeps your `main` branch and `node_modules` intact
+- No branch switching, no cleanup needed
 
 ### After Deployment
 1. Wait 1-2 minutes for GitHub Pages to rebuild
@@ -185,12 +162,27 @@ Shows welcome message when no data loaded:
 
 ## Troubleshooting
 
-### If Deployment Still Fails
-Try the manual `gh-pages` tool:
+### If Deployment Fails
+Check the error message from `npm run deploy`. Common issues:
+- **Git authentication:** Make sure you're logged into GitHub
+- **Permissions:** Ensure you have push access to the repository
+- **Build errors:** The build happens automatically, check the error output
+- **Missing dependencies:** Run `npm install` if you see "command not found" errors
+
+### If You Need Manual Deployment
+If the `gh-pages` tool doesn't work, you can deploy manually (but this requires more steps and deletes/reinstalls node_modules):
 ```bash
 cd /home/jeremy/code/brandmap
 npm run build
-npx gh-pages -d dist --branch gh-pages
+git checkout gh-pages
+git rm -rf .
+cp -r dist/* .
+rm -rf dist
+git add -A
+git commit -m "Deploy update"
+git push origin gh-pages
+git checkout main
+npm install  # Reinstall dependencies
 ```
 
 ### If Site Shows 404
@@ -208,16 +200,23 @@ npx gh-pages -d dist --branch gh-pages
 ## Quick Commands Reference
 
 ```bash
+# Deploy to GitHub Pages (builds and deploys automatically)
+npm run deploy
+
+# Run dev server locally
+npm run dev
+# Then visit: http://localhost:5173/brandmap/
+
+# Manual build only (without deploying)
+npm run build && ls -la dist/
+
 # Check current branch
 git branch
 
 # Check what's deployed on gh-pages
-git show gh-pages:src/App.jsx | grep -A5 "useEffect"
+git show gh-pages:index.html | head -20
 
-# Verify build works
-npm run build && ls -la dist/
-
-# Check live site
+# Check live site status
 curl -I https://jsince.github.io/brandmap/
 ```
 
@@ -242,5 +241,11 @@ curl -I https://jsince.github.io/brandmap/
 
 ## Summary for New Chat
 
-**IN ONE SENTENCE:** The app works locally but the GitHub Pages deployment has old code that tries to auto-load a sitemap and fails with CORS errors - need to rebuild and deploy the new code from `main` branch to `gh-pages` branch using the commands above.
+**IN ONE SENTENCE:** The app works locally and is deployed to GitHub Pages - to deploy updates, simply run `npm run deploy` which automatically builds and deploys without branch switching or deleting node_modules.
+
+**DEPLOYMENT STATUS:** ✅ Fixed as of Nov 18, 2025 - the live site now shows the welcome message instead of CORS errors.
+
+**KEY COMMANDS:**
+- Deploy: `npm run deploy`
+- Run locally: `npm run dev` (then visit http://localhost:5173/brandmap/)
 

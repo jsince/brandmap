@@ -6,6 +6,7 @@ package-lock.json
 dist/
 build/
 *.local
+.vite/
 
 # Logs
 logs
@@ -35,4 +36,3 @@ pnpm-debug.log*
 # Windows WSL Zone Identifier files
 *:Zone.Identifier
 *.Identifier
-/.vite/
